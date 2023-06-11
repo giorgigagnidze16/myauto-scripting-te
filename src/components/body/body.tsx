@@ -108,7 +108,7 @@ export const Body = () => {
 
                 Promise.all(prom).then(x => {
                     if (x) {
-                        localStorage.setItem('models', JSON.stringify(x));
+                        localStorage.setItem("models", JSON.stringify(x));
                     }
                 }).catch(err => JSON.stringify(err));
 
@@ -119,7 +119,7 @@ export const Body = () => {
 
             return () => {
                 clearInterval(intervalId);
-                localStorage.removeItem('allModels');
+                localStorage.removeItem("models");
             };
         }
     }, [manufacturers]);
