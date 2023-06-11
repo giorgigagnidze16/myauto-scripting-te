@@ -1,0 +1,229 @@
+@font-face {
+  font-family: 'fontuka';
+  src: local('fontuka'), url("./fonts/fontuka.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'noto-extra-l';
+  src: local('sailec'), url("./fonts/noto-extra-light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'noto-l';
+  src: local('sailec'), url("./fonts/noto-light.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'noto-m';
+  src: local('sailec'), url("./fonts/noto-m.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'noto-semi';
+  src: local('sailec'), url("./fonts/noto-semi.ttf") format("truetype");
+}
+
+.card {
+  position: relative;
+  height: 172px;
+  width: 780px;
+  border-radius: 14px;
+  background: #FFFFFF;
+  margin-top: 10px;
+}
+
+.photo {
+  height: 144px;
+  width: 182px;
+  left: -4px;
+  top: -3px;
+  border-radius: 8px;
+  margin-top: 13px;
+  margin-left: 12px;
+  float: left;
+  margin-right: 16px;
+}
+
+.model {
+  font-family: noto-l, serif;
+  display: inline-block;
+  min-width: 230px;
+  height: 17px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 17px;
+  color: #272A37;
+}
+
+.year {
+  font-family: noto-l, serif;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 17px;
+  color: #8C929B;
+  opacity: 0.7;
+}
+
+.info p {
+  font-family: fontuka, serif;
+}
+
+.info {
+  position: relative;
+  display: inline-block;
+  width: 396px;
+  height: 49.5px;
+  margin-top: 24px;
+}
+
+.info {
+  font-family: fontuka, serif !important;
+  color: #1B1D25;
+}
+
+.engine {
+  position: absolute;
+  left: 0;
+}
+
+.engineText {
+  position: absolute;
+  min-width: 250px;
+  font-family: noto-extra-l, serif;
+  font-size: 14px;
+  margin-left: 12px;
+  font-weight: 600;
+}
+
+.clutch {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+}
+
+.clutchText {
+  position: absolute;
+  min-width: 250px;
+  font-family: noto-extra-l, serif;
+  font-size: 14px;
+  margin-left: 12px;
+  font-weight: 600;
+}
+
+.miles {
+  position: absolute;
+  left: 215px;
+}
+
+.speedText {
+  position: absolute;
+  min-width: 250px;
+  font-family: noto-extra-l, serif;
+  font-size: 14px;
+  margin-left: 13px;
+  font-weight: 600;
+}
+
+.steering {
+  position: absolute;
+  left: 215px;
+  bottom: 0;
+}
+
+.steeringText {
+  position: absolute;
+  min-width: 250px;
+  font-family: noto-extra-l, serif;
+  font-size: 14px;
+  margin-left: 13px;
+  font-weight: 600;
+}
+
+.forRent {
+  display: inline-block;
+  width: 90px;
+  border-radius: 4px;
+  margin-right: 5px;
+  text-align: center;
+  font-family: noto-l, serif;
+  background-color: rgb(86, 179, 123);
+  color: white;
+  height: 20px;
+  padding-top: 2px;
+  font-size: 13px;
+  font-weight: bold;
+  position: relative;
+  top: 1px !important;
+}
+
+.stats {
+  font-family: noto-extra-l, serif;
+  font-size: 12px;
+  height: 11px;
+  color: #8C929B;
+  font-weight: bold;
+}
+
+.dot {
+  display: inline-block;
+  height: 2px;
+  width: 2px;
+  background-color: #8C929B;
+  text-align: center;
+  position: relative;
+  margin-left: 8px;
+  margin-right: 8px;
+  bottom: 2px;
+  font-weight: bolder;
+  font-size: 14px;
+  border-radius: 11px;
+}
+
+.taxed {
+  float: right;
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  font-family: noto-m, serif;
+  color:  #26B753;
+  font-size: 11px;
+  line-height: 11px;
+}
+
+.notTaxed {
+  float: right;
+  position: absolute;
+  top: 18px;
+  right: 16px;
+  font-family: noto-m, serif;
+  color:  #FF3B30;
+  font-size: 11px;
+  line-height: 11px;
+}
+
+.bottomIcons {
+  position: absolute;
+  right: 16px;
+  bottom: 20px;
+  cursor: pointer;
+}
+
+.price {
+  position: absolute;
+  top: 58px;
+  font-family: noto-semi, serif;
+  min-width: 60px;
+  height: 20px;
+  right: 46px;
+  font-style: normal;
+  font-size: 20px;
+  line-height: 20px;
+  text-align: right;
+  color: #272A37;
+}
+
+.priceToggle {
+  font-size: 18px;
+  cursor: pointer;
+}

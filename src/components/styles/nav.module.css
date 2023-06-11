@@ -1,0 +1,14 @@
+.parent {
+  background: #FFFFFF;
+  height: 80px;
+  position: relative;
+}
+.wrapper {
+  width: 1200px;
+  margin: 0 auto;
+}
+.logo {
+  position: absolute;
+  top: 17px;
+}
+/*# sourceMappingURL=nav.module.css.map */
