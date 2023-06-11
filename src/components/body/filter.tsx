@@ -46,10 +46,12 @@ export const Filter = React.memo(({
                                       setShowUSD,
                                       mans,
                                       cats,
-                                      handleSearch
+                                      handleSearch,
+                                      setFilter
                                   }: {
     showUSD: boolean, setShowUSD: React.Dispatch<React.SetStateAction<boolean>>,
-    cats: ICategory[], mans: IManufacturer[], handleSearch: ({filterQuery}: { filterQuery: string }) => void
+    setFilter: React.Dispatch<React.SetStateAction<string>>, cats: ICategory[],
+    mans: IManufacturer[], handleSearch: ({filterQuery}: { filterQuery: string }) => void
 }) => {
     const [isCar, setCar] = useState(true)
     const [isTractor, setTractor] = useState(false)
@@ -162,8 +164,9 @@ export const Filter = React.memo(({
             query.length !== 0 ? '&' : ''
         }CurrencyID=${showUSD ? '1' : '3'}`;
 
+        setFilter(query)
         handleSearch({filterQuery: query});
-    }, [cat, cats, fromYear, handleSearch, man, mans, max, min, model, sale, showUSD, toYear])
+    }, [cat, cats, fromYear, handleSearch, man, mans, max, min, model, sale, setFilter, showUSD, toYear])
 
     useEffect(() => {
         const mansIds = mans.filter(x => man.includes(x.man_name)).map(x => x.man_id);

@@ -49,7 +49,6 @@ function mapOrder(order: string) {
 export const Body = () => {
     const [products, setProducts] = useState<ICar[]>([])
     const [fetchedModels, setFetchedModels] = useState<ICarModel[]>([])
-    const [models, setModels] = useState<ICarModel[]>([])
     const [manufacturers, setManufacturers] = useState<IManufacturer[]>([])
     const [cats, setCats] = useState<ICategory[]>([])
     const [showUSD, setShowUSD] = useState(false)
@@ -58,6 +57,7 @@ export const Body = () => {
     const [sortOrder, setOrder] = useState<string>(sortOrderArray[0]);
     const [periodQuery, setPeriodQuery] = useState<string[]>([]);
     const [index, setIndex] = useState(1);
+    const [filter, setFilter] = useState("");
 
     useEffect(() => {
         Promise.all([
@@ -99,9 +99,7 @@ export const Body = () => {
     useEffect(() => {
         const modelsJson = localStorage.getItem("models");
 
-        if (modelsJson !== null && JSON.parse(modelsJson).length > 0) {
-            setModels(JSON.parse(localStorage.getItem("models")!))
-        } else {
+        if (modelsJson == null) {
             const fetchData = async () => {
                 const prom = [];
                 for (const manufact of manufacturers) {
@@ -110,7 +108,6 @@ export const Body = () => {
 
                 Promise.all(prom).then(x => {
                     if (x) {
-                        setModels(x.flatMap((y: any) => y));
                         localStorage.setItem('models', JSON.stringify(x));
                     }
                 }).catch(err => JSON.stringify(err));
@@ -140,12 +137,12 @@ export const Body = () => {
 
     useEffect(() => {
         if (periodQuery.length !== 0) {
-            api.fetchProductsFromUrl(periodQuery.join("&"), index).then(cars => {
+            api.fetchProductsFromUrl(periodQuery.join("&") + "&" + filter, index).then(cars => {
                 setProducts(cars.items)
                 setTotal(cars.meta)
             }).catch(err => alert(JSON.stringify(err)))
         }
-    }, [index, periodQuery])
+    }, [filter, index, periodQuery])
 
 
     const handleSearch = useCallback(({filterQuery}: { filterQuery: string }) => {
@@ -155,10 +152,22 @@ export const Body = () => {
         }).catch(err => alert(JSON.stringify(err)))
     }, [index, periodQuery])
 
+    const handleNext = useCallback(() => {
+        if (index + 1 <= total / 15) {
+            setIndex(prevState => prevState + 1)
+        }
+    }, [index, total])
+
+    const handlePrev = useCallback(() => {
+        if (index - 1 > 0) {
+            setIndex(prevState => prevState - 1)
+        }
+    }, [index])
+
     return (
         <div className={styles.root}>
             <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
-                    handleSearch={handleSearch}/>
+                    handleSearch={handleSearch} setFilter={setFilter}/>
             {products && manufacturers && cats && manufacturers.length > 0 && fetchedModels.length > 0 ? (
                 <React.Fragment>
                     <div className={styles.cardHolder}>
@@ -179,8 +188,14 @@ export const Body = () => {
                                        showUSD={showUSD}
                                        setShowUSD={setShowUSD}/>))
                         }
+
+                        <div className={styles.pagin}>
+                            <button className={styles.next} onClick={handlePrev}>უკან</button>
+                            <span style={{marginRight: 20}}> </span>
+                            <button className={styles.next} onClick={handleNext}>წინ</button>
+                        </div>
                     </div>
-                    <button onClick={() => setIndex(prevState => prevState + 1)}>Next</button>
+
                 </React.Fragment>) : <img src={loader} alt={"load"} className={styles.loader}/>}
         </div>
     )

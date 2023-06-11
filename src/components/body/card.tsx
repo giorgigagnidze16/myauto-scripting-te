@@ -7,6 +7,7 @@ import {ReactComponent as Speed} from "../styles/imgs/speed.svg";
 import {ReactComponent as Steering} from "../styles/imgs/sache.svg";
 import {ReactComponent as Done} from "../styles/imgs/done.svg";
 import {ReactComponent as BottomIcons} from "../styles/imgs/icons.svg";
+import alt from "../styles/imgs/alt.gif";
 
 
 const gearTypes = [
@@ -100,7 +101,12 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
                 <React.Fragment>
                     <img
                         src={`https://static.my.ge/myauto/photos/${car.photo}/thumbs/${car.car_id}_1.jpg?v=${car.photo_ver}`}
-                        className={styles.photo}/>
+                        className={styles.photo}
+                        onError={({ currentTarget }) => {
+                            currentTarget.onerror = null;
+                            currentTarget.src=alt;
+                        }}
+                    alt={"image"}/>
                     <span>
 
 

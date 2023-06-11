@@ -24,9 +24,10 @@ export class InfoController {
         return response.data.data.items
     }
 
-    async fetchProductsFromUrl(query: string, page: number): Promise<{items: ICar[], meta: number}> {
+    async fetchProductsFromUrl(query: string, page: number): Promise<{ items: ICar[], meta: number }> {
+        console.log(query)
         const response = await axios.get<any>(`https://api2.myauto.ge/ka/products?${query}&Page=${page}`)
-        return { items: response.data.data.items, meta: response.data.data.meta.total}
+        return {items: response.data.data.items, meta: response.data.data.meta.total}
     }
 
     async fetchMeta(): Promise<number> {
