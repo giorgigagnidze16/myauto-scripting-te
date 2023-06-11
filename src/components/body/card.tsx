@@ -73,7 +73,14 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
     const [man, setMan] = useState<IManufacturer | undefined>()
 
     useEffect(() => {
-        setCarModel(models.find(m => m.model_id === car.model_id))
+        const modelsJson = localStorage.getItem("models");
+
+        if (modelsJson !== null && JSON.parse(modelsJson).length > 0) {
+            const parsed = JSON.parse(modelsJson).flatMap((x: any) => x) as ICarModel[];
+            setCarModel(parsed.find(m => m.model_id === car.model_id))
+        } else {
+            setCarModel(models.find(m => m.model_id === car.model_id))
+        }
         setMan(mans.find(m => m.man_id === car.man_id + ""))
     }, [car.man_id, car.model_id, mans, models])
 
@@ -87,11 +94,9 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
         </div>
     }
 
-    if (!(car && man && model)) return <React.Fragment></React.Fragment>
-
     return (
         <div className={styles.card}>
-            {car && man && model && (
+            {car && (
                 <React.Fragment>
                     <img
                         src={`https://static.my.ge/myauto/photos/${car.photo}/thumbs/${car.car_id}_1.jpg?v=${car.photo_ver}`}
@@ -101,8 +106,8 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
 
                     <p className={styles.model}>
                         {car.for_rent && <span className={styles.forRent}>ქირავდება</span>}
-                        {man.man_name} {" "}
-                        <span style={{marginRight: 5}}>{model.model_name} </span>
+                        {man?.man_name} {" "}
+                        <span style={{marginRight: 5}}>{model?.model_name} </span>
                         <span className={styles.year}>{car.prod_year} წ</span>
                     </p>
                     </span>
@@ -158,7 +163,7 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
                         <BottomIcons/>
                     </span>
 
-                    <span className={styles.price} >
+                    <span className={styles.price}>
                             {!showUSD ? car.price_value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
                                 : Math.round(car.price_usd).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                         <span className={styles.priceToggle} onClick={() => setShowUSD(prevState => !prevState)}>

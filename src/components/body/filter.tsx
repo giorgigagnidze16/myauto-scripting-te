@@ -41,13 +41,13 @@ const getYearList = () => {
     return arr.reverse();
 }
 
-export const Filter = ({
-                           showUSD,
-                           setShowUSD,
-                           mans,
-                           cats,
-                           handleSearch
-                       }: {
+export const Filter = React.memo(({
+                                      showUSD,
+                                      setShowUSD,
+                                      mans,
+                                      cats,
+                                      handleSearch
+                                  }: {
     showUSD: boolean, setShowUSD: React.Dispatch<React.SetStateAction<boolean>>,
     cats: ICategory[], mans: IManufacturer[], handleSearch: ({filterQuery}: { filterQuery: string }) => void
 }) => {
@@ -63,131 +63,105 @@ export const Filter = ({
     const [fromYear, setFromYear] = useState()
     const [toYear, setToYear] = useState()
     const [models, setModels] = useState<{ label: string, value: string, parent: string }[]>([])
-    const handleSwitchCar = () => {
-        setCar(true)
-        setMoto(false)
-        setTractor(false)
-    }
 
-    const handleSwitchTractor = () => {
-        setCar(false)
-        setMoto(false)
-        setTractor(true)
-    }
+    const handleSwitchCar = useCallback(() => {
+        setCar(true);
+        setMoto(false);
+        setTractor(false);
+    }, [])
 
-    const handleSwitchMoto = () => {
-        setCar(false)
-        setMoto(true)
-        setTractor(false)
-    }
+    const handleSwitchTractor = useCallback(() => {
+        setCar(false);
+        setMoto(false);
+        setTractor(true);
+    }, [])
 
-    const handleMinChange = (e: any) => {
-        if ((!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value))) || e.target.value === "") {
+    const handleSwitchMoto = useCallback(() => {
+        setCar(false);
+        setMoto(true);
+        setTractor(false);
+    }, [])
+
+    const handleMinChange = useCallback((e: any) => {
+        if (
+            (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value))) ||
+            e.target.value === ''
+        ) {
             setMin(e.target.value);
         }
-    }
+    }, []);
 
-    const handleMaxChange = (e: any) => {
-        if ((!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value))) || e.target.value === "") {
+    const handleMaxChange = useCallback((e: any) => {
+        if (
+            (!isNaN(e.target.value) && !isNaN(parseFloat(e.target.value))) ||
+            e.target.value === ''
+        ) {
             setMax(e.target.value);
         }
-    }
+    }, []);
 
     const handleSearchButton = useCallback(() => {
         let catIds = [];
         let manIds: string[] = [];
-        let query = "";
+        let query = '';
         if (sale.length !== 0) {
-            if (sale === "ქირავდება") {
-                query += "ForRent=1"
-            } else {
-                query += "ForRent=0"
-            }
+            query += `ForRent=${sale === 'ქირავდება' ? 1 : 0}`;
         }
         if (cat.length !== 0) {
-            catIds = cats.filter(x => cat.includes(x.title)).map(x => x.category_id);
+            catIds = cats
+                .filter((x) => cat.includes(x.title))
+                .map((x) => x.category_id);
             if (catIds.length > 0) {
-                if (query.length === 0) {
-                    query += `Cats=${catIds.join(".")}`;
-                } else {
-                    query += `&Cats=${catIds.join(".")}`;
-                }
+                query += `${query.length === 0 ? '' : '&'}Cats=${catIds.join('.')}`;
             }
         }
         if (man.length !== 0) {
-            manIds = mans.filter(x => man.includes(x.man_name)).map(x => x.man_id);
+            manIds = mans
+                .filter((x) => man.includes(x.man_name))
+                .map((x) => x.man_id);
             if (manIds.length > 0) {
-                if (query.length !== 0) {
-                    query += "&Mans="
-                } else {
-                    query += "Mans="
-                }
+                query += `${query.length !== 0 ? '&' : ''}Mans=`;
                 if (model.length > 0) {
                     for (let i = 0; i < manIds.length; i++) {
-                        if (i === 0) {
-                            query += manIds[i] + "." + model.filter((m: any) => m.parent === manIds[i]).map((x: any) => x.value).join(".")
-                        } else {
-                            query += "-" + manIds[i] + "." + model.filter((m: any) => m.parent === manIds[i]).map((x: any) => x.value).join(".")
-                        }
-                        if (query[query.length - 1] === ".") {
-                            query = query.substring(0, query.length - 1)
+                        query +=
+                            `${i === 0 ? '' : '-'}${manIds[i]}.` +
+                            model
+                                .filter((m: any) => m.parent === manIds[i])
+                                .map((x: any) => x.value)
+                                .join('.');
+                        if (query[query.length - 1] === '.') {
+                            query = query.substring(0, query.length - 1);
                         }
                     }
                 } else {
-                    query += `${manIds.join("-")}`
+                    query += `${manIds.join('-')}`;
                 }
             }
-            if (query[query.length - 1] === ".") {
-                query = query.substring(0, query.length - 1)
+            if (query[query.length - 1] === '.') {
+                query = query.substring(0, query.length - 1);
             }
         }
 
         if (min) {
-            if (query.length !== 0) {
-                query += "&PriceFrom=" + min;
-            } else {
-                query += "PriceFrom=" + min;
-            }
+            query += `${query.length !== 0 ? '&' : ''}PriceFrom=${min}`;
         }
 
         if (max) {
-            if (query.length !== 0) {
-                query += "&PriceTo=" + max;
-            } else {
-                query += "PriceTo=" + max;
-            }
+            query += `${query.length !== 0 ? '&' : ''}PriceTo=${max}`;
         }
 
         if (fromYear) {
-            if (query.length !== 0) {
-                query += "&ProdYearFrom=" + fromYear;
-            } else {
-                query += "ProdYearFrom=" + fromYear;
-            }
+            query += `${query.length !== 0 ? '&' : ''}ProdYearFrom=${fromYear}`;
         }
 
         if (toYear) {
-            if (query.length !== 0) {
-                query += "&ProdYearTo=" + toYear;
-            } else {
-                query += "ProdYearTo=" + toYear;
-            }
+            query += `${query.length !== 0 ? '&' : ''}ProdYearTo=${toYear}`;
         }
 
+        query += `${
+            query.length !== 0 ? '&' : ''
+        }CurrencyID=${showUSD ? '1' : '3'}`;
 
-        if (showUSD) {
-            if (query.length !== 0) {
-                query += "&CurrencyID=1";
-            } else {
-                query += "CurrencyID=1";
-            }
-        } else {
-            if (query.length !== 0) {
-                query += "&CurrencyID=3";
-            } else {
-                query += "CurrencyID=3";
-            }
-        }
         handleSearch({filterQuery: query});
     }, [cat, cats, fromYear, handleSearch, man, mans, max, min, model, sale, showUSD, toYear])
 
@@ -196,7 +170,7 @@ export const Filter = ({
         if (mansIds.length === 0) setModels([])
         const ms: { label: string, value: string, parent: string }[] = [];
         for (const id of mansIds) {
-            api.fetchModelsByManufacturerId(parseInt(id)).then(x => {
+            api.fetchModelsByManufacturerId(id).then(x => {
                 x.forEach(t => ms.push({label: t.model_name, value: t.model_id + "", parent: t.man_id + ""}))
             })
         }
@@ -328,7 +302,7 @@ export const Filter = ({
             </div>
         </div>
     )
-}
+})
 
 
 

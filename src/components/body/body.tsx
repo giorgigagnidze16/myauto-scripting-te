@@ -5,6 +5,7 @@ import {InfoController} from "../../api/fetchs";
 import styles from "../styles/body.module.css";
 import {Filter, saleOptions} from "./filter";
 import {ReactComponent as ArrowDown} from "../styles/imgs/arr-down.svg";
+import loader from "../styles/imgs/loader.gif";
 
 export const api = new InfoController();
 
@@ -46,9 +47,10 @@ function mapOrder(order: string) {
 }
 
 export const Body = () => {
-    const [products, setProducts] = useState<ICar[] | undefined>()
+    const [products, setProducts] = useState<ICar[]>([])
+    const [fetchedModels, setFetchedModels] = useState<ICarModel[]>([])
     const [models, setModels] = useState<ICarModel[]>([])
-    const [mans, setMans] = useState<IManufacturer[]>([])
+    const [manufacturers, setManufacturers] = useState<IManufacturer[]>([])
     const [cats, setCats] = useState<ICategory[]>([])
     const [showUSD, setShowUSD] = useState(false)
     const [total, setTotal] = useState(0)
@@ -58,24 +60,72 @@ export const Body = () => {
     const [index, setIndex] = useState(1);
 
     useEffect(() => {
-        api.fetchProducts()
-            .then(cars => {
-                setProducts(cars)
+        Promise.all([
+            api.fetchProducts(),
+            api.fetchManufacturers(),
+            api.fetchMeta(),
+            api.fetchCategories(),
+        ])
+            .then(([cars, manufacturers, total, categories]) => {
+                setProducts(cars);
+                setManufacturers(manufacturers);
+                setTotal(total);
+                setCats(categories);
 
-                for (const car of cars) {
-                    api.fetchModelsByManufacturerId(car.man_id)
-                        .then(resp => {
-                            setModels(prevState => [...prevState, ...resp])
-                        })
+
+                const modelsJson = localStorage.getItem("models");
+
+                if (modelsJson !== null && JSON.parse(modelsJson).length > 0) {
+                    const parsed = JSON.parse(modelsJson).flatMap((x: any) => x) as ICarModel[];
+                    const data: ICarModel[] = [];
+                    for (const car of cars) {
+                        data.push(...(parsed.filter((x: ICarModel) => x.man_id === car.man_id)))
+                    }
+                    setFetchedModels(data)
+                } else {
+                    const fetchPromise = [];
+                    for (const car of cars) {
+                        fetchPromise.push(api.fetchModelsByManufacturerId(car.man_id + ""))
+                    }
+
+                    Promise.all(fetchPromise).then(([mod]) => {
+                        setFetchedModels(mod)
+                    })
                 }
             })
-            .catch(err => alert(JSON.stringify(err)));
-        api.fetchManufacturers().then(res => setMans(res)).catch(err => alert(JSON.stringify(err)))
+            .catch((err) => alert(JSON.stringify(err)));
+    }, []);
 
-        api.fetchMeta().then(x => setTotal(x)).catch(err => alert(JSON.stringify(err)))
-        api.fetchCategories().then(x => setCats(x)).catch(err => alert(JSON.stringify(err)))
-    }, [])
+    useEffect(() => {
+        const modelsJson = localStorage.getItem("models");
 
+        if (modelsJson !== null && JSON.parse(modelsJson).length > 0) {
+            setModels(JSON.parse(localStorage.getItem("models")!))
+        } else {
+            const fetchData = async () => {
+                const prom = [];
+                for (const manufact of manufacturers) {
+                    prom.push(api.fetchModelsByManufacturerId(manufact.man_id));
+                }
+
+                Promise.all(prom).then(x => {
+                    if (x) {
+                        setModels(x.flatMap((y: any) => y));
+                        localStorage.setItem('models', JSON.stringify(x));
+                    }
+                }).catch(err => JSON.stringify(err));
+
+            };
+
+            fetchData();
+            const intervalId = setInterval(fetchData, 15 * 60 * 1000);
+
+            return () => {
+                clearInterval(intervalId);
+                localStorage.removeItem('allModels');
+            };
+        }
+    }, [manufacturers]);
 
     useEffect(() => {
         if (sortTime.length !== 0) {
@@ -107,25 +157,31 @@ export const Body = () => {
 
     return (
         <div className={styles.root}>
-            <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={mans} cats={cats} handleSearch={handleSearch}/>
-            <div className={styles.cardHolder}>
+            <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
+                    handleSearch={handleSearch}/>
+            {products && manufacturers && cats && manufacturers.length > 0 && fetchedModels.length > 0 ? (
+                <React.Fragment>
+                    <div className={styles.cardHolder}>
                <span className={styles.totalMeta}>
                   {`${total} განცხადება`}
                </span>
-                <Dropdown title={sortOrderArray[0]} width={180} height={30} items={sortOrderArray}
-                          item={sortOrder} setItem={setOrder}
-                          style={{marginLeft: 10, fontSize: 14, fontWeight: "600 !important"}}/>
+                        <Dropdown title={sortOrderArray[0]} width={180} height={30} items={sortOrderArray}
+                                  item={sortOrder} setItem={setOrder}
+                                  style={{marginLeft: 10, fontSize: 14, fontWeight: "600 !important"}}/>
 
-                <Dropdown title={"პერიოდი"} width={140} height={30} items={timePeriod}
-                          item={sortTime} setItem={setSortTime} style={{fontSize: 14, fontWeight: "600 !important"}}/>
+                        <Dropdown title={"პერიოდი"} width={140} height={30} items={timePeriod}
+                                  item={sortTime} setItem={setSortTime}
+                                  style={{fontSize: 14, fontWeight: "600 !important"}}/>
 
-                {products && mans && cats && mans.length > 0 && models.length > 0 && products && products
-                    .map((car, index) =>
-                        (<Card car={car} key={index} models={models} mans={mans} showUSD={showUSD}
-                               setShowUSD={setShowUSD}/>))
-                }
-            </div>
-            <button onClick={() => setIndex(prevState => prevState + 1)}>Next</button>
+                        {products
+                            .map((car, index) =>
+                                (<Card car={car} key={index} models={fetchedModels} mans={manufacturers}
+                                       showUSD={showUSD}
+                                       setShowUSD={setShowUSD}/>))
+                        }
+                    </div>
+                    <button onClick={() => setIndex(prevState => prevState + 1)}>Next</button>
+                </React.Fragment>) : <img src={loader} alt={"load"} className={styles.loader}/>}
         </div>
     )
 }

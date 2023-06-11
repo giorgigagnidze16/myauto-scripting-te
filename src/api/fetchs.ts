@@ -8,7 +8,7 @@ export class InfoController {
         return response.data
     }
 
-    async fetchModelsByManufacturerId(manId: number): Promise<ICarModel[]> {
+    async fetchModelsByManufacturerId(manId: string): Promise<ICarModel[]> {
         const response = await axios.get<any>(`https://api2.myauto.ge/ka/getManModels?man_id=${manId}`)
         return response.data.data
     }
