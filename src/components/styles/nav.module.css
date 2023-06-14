@@ -11,4 +11,12 @@
   position: absolute;
   top: 17px;
 }
+@media only screen and (max-width: 800px) {
+  .wrapper {
+    width: 98vw !important;
+  }
+  .parent {
+    width: 98vw !important;
+  }
+}
 /*# sourceMappingURL=nav.module.css.map */

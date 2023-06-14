@@ -101,7 +101,7 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
                 <React.Fragment>
                     <img
                         src={`https://static.my.ge/myauto/photos/${car.photo}/thumbs/${car.car_id}_1.jpg?v=${car.photo_ver}`}
-                        className={styles.photo}
+                        className={`${styles.photo} selected`}
                         onError={({ currentTarget }) => {
                             currentTarget.onerror = null;
                             currentTarget.src=alt;

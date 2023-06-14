@@ -166,21 +166,23 @@ export const Body = () => {
 
     return (
         <div className={styles.root}>
+            <div className={styles.filterWrap}>
             <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
                     handleSearch={handleSearch} setFilter={setFilter}/>
+            </div>
             {products && manufacturers && cats && manufacturers.length > 0 && fetchedModels.length > 0 ? (
                 <React.Fragment>
                     <div className={styles.cardHolder}>
                <span className={styles.totalMeta}>
                   {`${total} განცხადება`}
                </span>
-                        <Dropdown title={sortOrderArray[0]} width={180} height={30} items={sortOrderArray}
-                                  item={sortOrder} setItem={setOrder}
-                                  style={{marginLeft: 10, fontSize: 14, fontWeight: "600 !important"}}/>
+                        {/*<Dropdown title={sortOrderArray[0]} width={180} height={30} items={sortOrderArray}*/}
+                        {/*          item={sortOrder} setItem={setOrder}*/}
+                        {/*          style={{marginLeft: 10, fontSize: 14, fontWeight: "600 !important"}}/>*/}
 
-                        <Dropdown title={"პერიოდი"} width={140} height={30} items={timePeriod}
-                                  item={sortTime} setItem={setSortTime}
-                                  style={{fontSize: 14, fontWeight: "600 !important"}}/>
+                        {/*<Dropdown title={"პერიოდი"} width={140} height={30} items={timePeriod}*/}
+                        {/*          item={sortTime} setItem={setSortTime}*/}
+                        {/*          style={{fontSize: 14, fontWeight: "600 !important"}}/>*/}
 
                         {products
                             .map((car, index) =>
