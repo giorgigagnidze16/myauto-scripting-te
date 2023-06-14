@@ -7,7 +7,10 @@ import {ReactComponent as Speed} from "../styles/imgs/speed.svg";
 import {ReactComponent as Steering} from "../styles/imgs/sache.svg";
 import {ReactComponent as Done} from "../styles/imgs/done.svg";
 import {ReactComponent as BottomIcons} from "../styles/imgs/icons.svg";
+import {ReactComponent as Hot} from "../styles/imgs/hot.svg";
+import {ReactComponent as Love} from "../styles/imgs/path.svg";
 import alt from "../styles/imgs/alt.gif";
+import {useWindowSize} from "@uidotdev/usehooks";
 
 
 const gearTypes = [
@@ -72,6 +75,7 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
 
     const [model, setCarModel] = useState<ICarModel | undefined>()
     const [man, setMan] = useState<IManufacturer | undefined>()
+    const width = useWindowSize()
 
     useEffect(() => {
         const modelsJson = localStorage.getItem("models");
@@ -99,14 +103,20 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
         <div className={styles.card}>
             {car && (
                 <React.Fragment>
+                    {width.width <= 800 &&
+                        <Love style={{
+                            position: "absolute", right: 25, height: 20, fill: "orange",
+                            width: 30, top: 120, zIndex: 900, cursor: "pointer"
+                        }}/>
+                    }
                     <img
                         src={`https://static.my.ge/myauto/photos/${car.photo}/thumbs/${car.car_id}_1.jpg?v=${car.photo_ver}`}
                         className={`${styles.photo} selected`}
-                        onError={({ currentTarget }) => {
+                        onError={({currentTarget}) => {
                             currentTarget.onerror = null;
-                            currentTarget.src=alt;
+                            currentTarget.src = alt;
                         }}
-                    alt={"image"}/>
+                        alt={"image"}/>
                     <span>
 
 
@@ -120,7 +130,7 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
 
                     <div className={styles.info}>
                         <span className={styles.engine}>
-                            <Engine width={16} height={16}/>
+                            <Engine width={16} height={16} className={styles.icon}/>
                             <span className={styles.engineText}>
                                 {parseFloat((car.engine_volume / 1000) + "").toFixed(1)} {" "}
                                 {fuelTypes.find(t => t.id === car.fuel_type_id)!.type}
@@ -128,33 +138,36 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
                         </span>
 
                         <span className={styles.clutch}>
-                            <Shifter width={16} height={16}/>
+                            <Shifter width={16} height={16} className={styles.icon}/>
                             <span className={styles.clutchText}>
                                 {gearTypes.find(t => t.id === car.gear_type_id)!.type}
                             </span>
                         </span>
 
                         <span className={styles.miles}>
-                            <Speed width={16} height={16}/>
+                            <Speed width={16} height={16} className={styles.icon}/>
                             <span className={styles.speedText}>
                                 {car.car_run_km} კმ
                             </span>
                         </span>
 
                         <span className={styles.steering}>
-                            <Steering width={16} height={16}/>
+                            <Steering width={16} height={16} className={styles.icon}/>
                             <span className={styles.steeringText}>
-                                {car.right_wheel ? "მარჯვენა" : "მარცხენა"}
+                                {width.width > 800 ? (car.right_wheel ? "მარჯვენა" : "მარცხენა")
+                                    : ((car.right_wheel ? "საჭე მარჯვნივ" : "საჭე მარცხნივ"))}
                             </span>
                         </span>
                     </div>
 
+                    {width.width <= 800 && <div style={{marginBottom: 30}}></div>}
+                    {width.width <= 800 && <div className={styles.border}></div>}
                     <div className={styles.stats}>
                         <p>
+                            {width.width <= 800 && <span className={styles.hot}><Hot/></span>}
                             <span className={styles.views}>{car.views} ნახვა</span>
                             <span className={styles.dot}></span>
                             <span>{getNormalizedDate(car.order_date)}</span>
-
                         </p>
                     </div>
 

@@ -13,10 +13,20 @@
 }
 @media only screen and (max-width: 800px) {
   .wrapper {
-    width: 98vw !important;
+    width: 100% !important;
   }
   .parent {
-    width: 98vw !important;
+    width: 100% !important;
+  }
+  .logo {
+    left: 10px;
+  }
+  .navMenu {
+    position: absolute;
+    float: right;
+    right: 30px;
+    top: 21px;
+    cursor: pointer;
   }
 }
 /*# sourceMappingURL=nav.module.css.map */

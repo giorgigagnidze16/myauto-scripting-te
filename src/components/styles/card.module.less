@@ -85,11 +85,13 @@
 .engine {
   position: absolute;
   left: 0;
+  width: 180px;
 }
 
 .engineText {
   position: absolute;
-  min-width: 250px;
+  min-width: 90px;
+  max-width: 180px;
   font-family: noto-extra-l, serif;
   font-size: 14px;
   margin-left: 12px;
@@ -100,15 +102,16 @@
   position: absolute;
   left: 0;
   bottom: 0;
+  width: 200px;
 }
 
 .clutchText {
   position: absolute;
-  min-width: 250px;
   font-family: noto-extra-l, serif;
   font-size: 14px;
   margin-left: 12px;
   font-weight: 600;
+  width: 200px;
 }
 
 .miles {
@@ -118,7 +121,7 @@
 
 .speedText {
   position: absolute;
-  min-width: 250px;
+  min-width: 70px;
   font-family: noto-extra-l, serif;
   font-size: 14px;
   margin-left: 13px;
@@ -133,7 +136,6 @@
 
 .steeringText {
   position: absolute;
-  min-width: 250px;
   font-family: noto-extra-l, serif;
   font-size: 14px;
   margin-left: 13px;
@@ -231,10 +233,12 @@
 
 @media only screen and (max-width: 800px) {
   .card {
-    background-color: lightblue;
-    width: 375px;
+    position: relative !important;
+    background-color: white;
+    width: 375px !important;
     height: 451px;
     margin: 0 auto 30px;
+    padding-top: 76px;
   }
 
   .filterWrap {
@@ -242,17 +246,99 @@
   }
 
   .photo {
+    position: relative !important;
+    display: block !important;
+    float: none !important;
+    top: 0 !important;
+    left: 0 !important;
+    margin: 0 auto;
+    width: 343px !important;
+    height: 256px !important;
+    margin-top: 30px !important;
+  }
+
+  .price {
+    position: absolute;
+    top: 56px;
+    max-width: 150px;
+    left: 18px !important;
+    float: left;
+    text-align: left;
+  }
+
+  .info {
+    display: block;
+    width: 328px !important;
+    height: 57px !important;
+  }
+
+  .model {
+    position: absolute;
+    top: 4px;
+    left: 18px;
+  }
+
+  .taxed {
+    width: 95px;
+    height: 20px;
+    color: #1EB676;
+    background-color: #EEFBF1;
+    text-align: center;
+    padding-top: 8px;
+    border-radius: 8px;
+    top: 58px;
+  }
+
+  .notTaxed {
+    width: 95px;
+    height: 20px;
+    color: #FF3B30;
+    background-color: #FFE3E3;
+    text-align: center;
+    padding-top: 8px;
+    border-radius: 8px;
+    top: 58px;
+  }
+
+  .icon {
     display: none;
   }
 
-  img {
-    position: relative !important;
-    top: 76px !important;
-    display: block !important;
-    height: 256px !important;
-    width: 343px !important;
-    margin: 0 auto !important;
-    float: none !important;
-    padding-top: 30px !important;
+  .miles {
+    left: 8px;
+  }
+
+  .engine {
+    top: 28px;
+    left: 8px;
+    width: 200px;
+  }
+
+  .clutch {
+    top: 54px;
+    left: 8px;
+  }
+
+  .steering {
+    top: 0;
+    left: 187px;
+    width: 120px !important;
+    float: right !important;
+  }
+
+  .stats {
+    position: absolute;
+    bottom: 40px;
+    left: 20px;
+  }
+
+  .border {
+    width: 100%;
+    border: 1px solid #E4E7EB;
+  }
+  
+  .hot {
+    display: inline-block;
+    margin-right: 6px;
   }
 }

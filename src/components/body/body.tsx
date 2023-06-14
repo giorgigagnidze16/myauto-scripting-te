@@ -6,6 +6,7 @@ import styles from "../styles/body.module.css";
 import {Filter, saleOptions} from "./filter";
 import {ReactComponent as ArrowDown} from "../styles/imgs/arr-down.svg";
 import loader from "../styles/imgs/loader.gif";
+import {useWindowSize} from "@uidotdev/usehooks";
 
 export const api = new InfoController();
 
@@ -58,6 +59,7 @@ export const Body = () => {
     const [periodQuery, setPeriodQuery] = useState<string[]>([]);
     const [index, setIndex] = useState(1);
     const [filter, setFilter] = useState("");
+    const width = useWindowSize()
 
     useEffect(() => {
         Promise.all([
@@ -167,23 +169,25 @@ export const Body = () => {
     return (
         <div className={styles.root}>
             <div className={styles.filterWrap}>
-            <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
-                    handleSearch={handleSearch} setFilter={setFilter}/>
+                <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
+                        handleSearch={handleSearch} setFilter={setFilter}/>
             </div>
             {products && manufacturers && cats && manufacturers.length > 0 && fetchedModels.length > 0 ? (
                 <React.Fragment>
                     <div className={styles.cardHolder}>
                <span className={styles.totalMeta}>
-                  {`${total} განცხადება`}
+                  {width.width > 800 && `${total} განცხადება`}
                </span>
-                        {/*<Dropdown title={sortOrderArray[0]} width={180} height={30} items={sortOrderArray}*/}
-                        {/*          item={sortOrder} setItem={setOrder}*/}
-                        {/*          style={{marginLeft: 10, fontSize: 14, fontWeight: "600 !important"}}/>*/}
+                        <div className={styles.dropdownWrap}>
+                            <Dropdown title={sortOrderArray[0]} width={180} height={30} items={sortOrderArray}
+                                      item={sortOrder} setItem={setOrder}
+                                      style={{marginRight: 10, fontSize: 14, fontWeight: "600 !important"}}/>
 
-                        {/*<Dropdown title={"პერიოდი"} width={140} height={30} items={timePeriod}*/}
-                        {/*          item={sortTime} setItem={setSortTime}*/}
-                        {/*          style={{fontSize: 14, fontWeight: "600 !important"}}/>*/}
-
+                            <Dropdown title={"პერიოდი"} width={140} height={30} items={timePeriod}
+                                      item={sortTime} setItem={setSortTime}
+                                      style={{fontSize: 14, fontWeight: "600 !important"}}/>
+                        </div>
+                        <br/>
                         {products
                             .map((car, index) =>
                                 (<Card car={car} key={index} models={fetchedModels} mans={manufacturers}
@@ -194,7 +198,9 @@ export const Body = () => {
                         <div className={styles.pagin}>
                             <button className={styles.next} onClick={handlePrev}>უკან</button>
                             <span style={{marginRight: 20}}> </span>
-                            <button className={styles.next} onClick={handleNext}>წინ</button>
+                            <button className={styles.next} style={width.width <= 800 ? {float: "right"} : {}}
+                                    onClick={handleNext}>წინ
+                            </button>
                         </div>
                     </div>
 

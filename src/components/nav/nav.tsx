@@ -1,7 +1,11 @@
 import { ReactComponent as Logo } from '../styles/imgs/logo.svg';
 import styles from "../styles/nav.module.css";
+import {useWindowSize} from "@uidotdev/usehooks";
+import React from "react";
+import {Menu} from "@mui/icons-material";
 
 export const Navbar = () => {
+    const width = useWindowSize()
 
     return (
         <div className={styles.parent}>
@@ -9,6 +13,7 @@ export const Navbar = () => {
                 <a href={"/"} className={styles.logo}>
                     <Logo />
                 </a>
+                {width.width <= 800 && <span className={styles.navMenu}><Menu style={{height: 40, width: 50}}/></span>}
             </div>
         </div>
     )
