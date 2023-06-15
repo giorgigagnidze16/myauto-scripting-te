@@ -206,7 +206,7 @@
   .card {
     position: relative !important;
     background-color: white;
-    width: 375px !important;
+    width: 90% !important;
     height: 451px;
     margin: 0 auto 30px;
     padding-top: 76px;
@@ -221,8 +221,8 @@
     top: 0 !important;
     left: 0 !important;
     margin: 0 auto;
-    width: 343px !important;
-    height: 256px !important;
+    width: 90% !important;
+    height: auto !important;
     margin-top: 30px !important;
   }
   .price {
