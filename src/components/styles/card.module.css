@@ -297,5 +297,8 @@
     display: inline-block;
     margin-right: 6px;
   }
+  .priceToggle {
+    margin-left: 20px;
+  }
 }
 /*# sourceMappingURL=card.module.css.map */
