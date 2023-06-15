@@ -47,7 +47,7 @@ function mapOrder(order: string) {
     }
 }
 
-export const Body = () => {
+export const Body = ({nav}: { nav: boolean }) => {
     const [products, setProducts] = useState<ICar[]>([])
     const [fetchedModels, setFetchedModels] = useState<ICarModel[]>([])
     const [manufacturers, setManufacturers] = useState<IManufacturer[]>([])
@@ -172,6 +172,8 @@ export const Body = () => {
                 <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
                         handleSearch={handleSearch} setFilter={setFilter}/>
             </div>
+            {nav && <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
+                            handleSearch={handleSearch} setFilter={setFilter}/>}
             {products && manufacturers && cats && manufacturers.length > 0 && fetchedModels.length > 0 ? (
                 <React.Fragment>
                     <div className={styles.cardHolder}>

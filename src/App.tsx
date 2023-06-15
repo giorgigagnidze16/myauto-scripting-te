@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Navbar} from "./components/nav/nav";
 import {Body} from "./components/body/body";
 
@@ -8,10 +8,12 @@ const styles = {
 }
 
 function App() {
+    const [showNav, setShowNav] = useState(false)
+
     return (
         <div style={styles}>
-            <Navbar/>
-            <Body/>
+            <Navbar setNav={setShowNav}/>
+            <Body nav={showNav}/>
         </div>
     );
 }
