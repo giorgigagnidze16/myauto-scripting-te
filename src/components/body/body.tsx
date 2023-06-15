@@ -178,7 +178,7 @@ export const Body = ({nav}: { nav: boolean }) => {
                 <React.Fragment>
                     <div className={styles.cardHolder}>
                <span className={styles.totalMeta}>
-                  {width.width > 800 && `${total} განცხადება`}
+                  {width.width > 700 && `${total} განცხადება`}
                </span>
                         <div className={styles.dropdownWrap}>
                             <Dropdown title={sortOrderArray[0]} width={180} height={30} items={sortOrderArray}
@@ -200,7 +200,7 @@ export const Body = ({nav}: { nav: boolean }) => {
                         <div className={styles.pagin}>
                             <button className={styles.next} onClick={handlePrev}>უკან</button>
                             <span style={{marginRight: 20}}> </span>
-                            <button className={styles.next} style={width.width <= 800 ? {float: "right"} : {}}
+                            <button className={styles.next} style={width.width <= 700 ? {float: "right"} : {}}
                                     onClick={handleNext}>წინ
                             </button>
                         </div>

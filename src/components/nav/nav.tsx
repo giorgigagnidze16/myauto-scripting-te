@@ -13,7 +13,7 @@ export const Navbar = ({setNav} : {setNav :  React.Dispatch<React.SetStateAction
                 <a href={"/"} className={styles.logo}>
                     <Logo />
                 </a>
-                {width.width <= 800 && <span className={styles.navMenu} onClick={() => setNav(prevState => !prevState)}>
+                {width.width <= 600 && <span className={styles.navMenu} onClick={() => setNav(prevState => !prevState)}>
                     <Menu style={{height: 40, width: 50}}/></span>}
             </div>
         </div>

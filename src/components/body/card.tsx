@@ -103,7 +103,7 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
         <div className={styles.card}>
             {car && (
                 <React.Fragment>
-                    {width.width <= 800 &&
+                    {width.width <= 700 &&
                         <Love style={{
                             position: "absolute", right: 25, height: 20, fill: "orange",
                             width: 30, top: 120, zIndex: 900, cursor: "pointer"
@@ -154,17 +154,17 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
                         <span className={styles.steering}>
                             <Steering width={16} height={16} className={styles.icon}/>
                             <span className={styles.steeringText}>
-                                {width.width > 800 ? (car.right_wheel ? "მარჯვენა" : "მარცხენა")
+                                {width.width > 700 ? (car.right_wheel ? "მარჯვენა" : "მარცხენა")
                                     : ((car.right_wheel ? "საჭე მარჯვნივ" : "საჭე მარცხნივ"))}
                             </span>
                         </span>
                     </div>
 
-                    {width.width <= 800 && <div style={{marginBottom: 30}}></div>}
-                    {width.width <= 800 && <div className={styles.border}></div>}
+                    {width.width <= 700 && <div style={{marginBottom: 30}}></div>}
+                    {width.width <= 700 && <div className={styles.border}></div>}
                     <div className={styles.stats}>
                         <p>
-                            {width.width <= 800 && <span className={styles.hot}><Hot/></span>}
+                            {width.width <= 700 && <span className={styles.hot}><Hot/></span>}
                             <span className={styles.views}>{car.views} ნახვა</span>
                             <span className={styles.dot}></span>
                             <span>{getNormalizedDate(car.order_date)}</span>
