@@ -11,7 +11,7 @@
   position: absolute;
   top: 17px;
 }
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 600px) {
   .wrapper {
     width: 100% !important;
   }

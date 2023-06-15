@@ -264,7 +264,7 @@ export const Filter = React.memo(({
                 <div className={styles.priceDiv}>
                     <span className={styles.dealTitle} style={{fontWeight: "bold", display: "block"}}>ფასი</span>
                     <span className={priceStyle.price}
-                          style={{float: "right", display: "inline-block", position: "absolute", top: -8, right: -10}}>
+                          style={{float: "right", display: "inline-block", position: "absolute", top: -8, right: -10, marginLeft:30}}>
                         <span className={priceStyle.priceToggle} onClick={() => setShowUSD(prevState => !prevState)}>
                             {" "}
                             <span style={showUSD ? {
