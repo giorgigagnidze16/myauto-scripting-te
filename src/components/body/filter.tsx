@@ -195,9 +195,16 @@ export const Filter = React.memo(({
                 x.forEach(t => ms.push({label: t.model_name, value: t.model_id + "", parent: t.man_id + ""}))
             })
         }
+
         setModels(ms)
     }, [cats, isCar, isMoto, isTractor, man, mans])
 
+
+    useEffect(() => {
+        setCat("")
+        setMan("")
+        setModel("")
+    }, [isMoto, isTractor, isCar])
 
     return (
         <div className={styles.body}>

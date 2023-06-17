@@ -70,6 +70,27 @@ export const currencyStyles = {
     textAlign: "center",
 }
 
+
+const validGear = (car: ICar) => {
+    const gear = gearTypes.find(t => t.id === car.gear_type_id);
+    if (gear) {
+        return gear.type
+    }
+
+    return ""
+}
+
+
+const validFuel = (car: ICar) => {
+    const fuel = fuelTypes.find(t => t.id === car.fuel_type_id)
+
+    if (fuel) {
+        return fuel.type
+    }
+
+    return ""
+}
+
 export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufacturer[], showUSD: boolean, setShowUSD: React.Dispatch<React.SetStateAction<boolean>> }>
 (({car, models, mans, showUSD, setShowUSD}) => {
 
@@ -122,8 +143,8 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
 
                     <p className={styles.model}>
                         {car.for_rent && <span className={styles.forRent}>ქირავდება</span>}
-                        {man?.man_name} {" "}
-                        <span style={{marginRight: 5}}>{model?.model_name} </span>
+                        {man ? man.man_name : ""} {" "}
+                        <span style={{marginRight: 5}}>{model ? model.model_name : ""} </span>
                         <span className={styles.year}>{car.prod_year} წ</span>
                     </p>
                     </span>
@@ -133,14 +154,14 @@ export const Card = React.memo<{ car: ICar, models: ICarModel[], mans: IManufact
                             <Engine width={16} height={16} className={styles.icon}/>
                             <span className={styles.engineText}>
                                 {parseFloat((car.engine_volume / 1000) + "").toFixed(1)} {" "}
-                                {fuelTypes.find(t => t.id === car.fuel_type_id)!.type}
+                                {validFuel(car)}
                             </span>
                         </span>
 
                         <span className={styles.clutch}>
                             <Shifter width={16} height={16} className={styles.icon}/>
                             <span className={styles.clutchText}>
-                                {gearTypes.find(t => t.id === car.gear_type_id)!.type}
+                               {validGear(car)}
                             </span>
                         </span>
 

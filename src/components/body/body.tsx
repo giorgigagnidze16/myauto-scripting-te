@@ -155,7 +155,7 @@ export const Body = ({nav}: { nav: boolean }) => {
     }, [index, periodQuery])
 
     const handleNext = useCallback(() => {
-        if (index + 1 <= total / 15) {
+        if (index + 1 <= Math.ceil(total / 15)) {
             setIndex(prevState => prevState + 1)
         }
     }, [index, total])
