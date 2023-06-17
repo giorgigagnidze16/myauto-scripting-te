@@ -65,6 +65,9 @@ export const Filter = React.memo(({
     const [fromYear, setFromYear] = useState()
     const [toYear, setToYear] = useState()
     const [models, setModels] = useState<{ label: string, value: string, parent: string }[]>([])
+    const [manufacturers, setManufacturers] = useState<IManufacturer[]>([]);
+    const [typeId, setTypeId] = useState(0)
+    const [categories, setCategories] = useState<ICategory[]>([])
 
     const handleSwitchCar = useCallback(() => {
         setCar(true);
@@ -164,12 +167,27 @@ export const Filter = React.memo(({
             query.length !== 0 ? '&' : ''
         }CurrencyID=${showUSD ? '1' : '3'}`;
 
+        query += "&TypeID=" + typeId + "&"
         setFilter(query)
         handleSearch({filterQuery: query});
-    }, [cat, cats, fromYear, handleSearch, man, mans, max, min, model, sale, setFilter, showUSD, toYear])
+    }, [cat, cats, fromYear, handleSearch, man, mans, max, min, model, sale, setFilter, showUSD, toYear, typeId])
 
     useEffect(() => {
-        const mansIds = mans.filter(x => man.includes(x.man_name)).map(x => x.man_id);
+        let mansIds: any[];
+        if (isCar) {
+            setTypeId(0)
+            setManufacturers(mans.filter(x => x.is_car === "1"))
+            setCategories(cats.filter(x => x.vehicle_types.includes(0)))
+        } else if (isMoto) {
+            setTypeId(2)
+            setManufacturers(mans.filter(x => x.is_moto === "1"))
+            setCategories(cats.filter(x => x.vehicle_types.includes(2)))
+        } else if (isTractor) {
+            setTypeId(1)
+            setManufacturers(mans.filter(x => x.is_spec === "1"))
+            setCategories(cats.filter(x => x.vehicle_types.includes(1)))
+        }
+        mansIds = mans.filter(x => man.includes(x.man_name)).map(x => x.man_id);
         if (mansIds.length === 0) setModels([])
         const ms: { label: string, value: string, parent: string }[] = [];
         for (const id of mansIds) {
@@ -178,7 +196,7 @@ export const Filter = React.memo(({
             })
         }
         setModels(ms)
-    }, [man, mans])
+    }, [cats, isCar, isMoto, isTractor, man, mans])
 
 
     return (
@@ -219,7 +237,8 @@ export const Filter = React.memo(({
                 <div className={styles.dealType}>
                     <span className={styles.dealTitle} style={{fontWeight: "bold"}}>მწარმოებელი</span>
                     <DropdownWithCheckbox
-                        title={"ყველა მწარმოებელი"} items={mans.map(x => x.man_name)} width={202} height={30} val={man}
+                        title={"ყველა მწარმოებელი"} items={manufacturers.map(x => x.man_name)} width={202} height={30}
+                        val={man}
                         setItem={setMan} style={{
                         float: "left",
                         marginTop: 8,
@@ -248,7 +267,7 @@ export const Filter = React.memo(({
                 <div className={styles.dealType}>
                     <span className={styles.dealTitle} style={{fontWeight: "bold"}}>კატეგორია</span>
                     <DropdownWithCheckbox
-                        title={"ყველა კატეგორია"} items={cats.map(x => x.title)} width={202} height={30} val={cat}
+                        title={"ყველა კატეგორია"} items={categories.map(x => x.title)} width={202} height={30} val={cat}
                         setItem={setCat} style={{
                         float: "left",
                         marginTop: 8,
@@ -264,7 +283,14 @@ export const Filter = React.memo(({
                 <div className={styles.priceDiv}>
                     <span className={styles.dealTitle} style={{fontWeight: "bold", display: "block"}}>ფასი</span>
                     <span className={priceStyle.price}
-                          style={{float: "right", display: "inline-block", position: "absolute", top: -8, right: -10, marginLeft:30}}>
+                          style={{
+                              float: "right",
+                              display: "inline-block",
+                              position: "absolute",
+                              top: -8,
+                              right: -10,
+                              marginLeft: 30
+                          }}>
                         <span className={priceStyle.priceToggle} onClick={() => setShowUSD(prevState => !prevState)}>
                             {" "}
                             <span style={showUSD ? {
