@@ -209,7 +209,7 @@ export const Filter = React.memo(({
     return (
         <div className={styles.body}>
             <div className={styles.items}>
-            <span className={"active"} style={isCar ? {...carStyle, ...active} : {...carStyle} as any}
+            <span className={styles.active} style={isCar ? {...carStyle, ...active} : {...carStyle} as any}
                   onClick={handleSwitchCar}>
                 <Car fill={isCar ? "#FD4100" : "#8C929B"}/>
             </span>
@@ -217,7 +217,7 @@ export const Filter = React.memo(({
                       onClick={handleSwitchTractor}>
                 <Tractor fill={isTractor ? "#FD4100" : "#8C929B"}/>
             </span>
-                <span className={"me"}
+                <span className={styles.me}
                       style={isMoto ? {...motoStyle, ...active} : {borderRightStyle: "none", ...motoStyle} as any}
                       onClick={handleSwitchMoto}>
                 <Moto fill={isMoto ? "#FD4100" : "#8C929B"}/>
