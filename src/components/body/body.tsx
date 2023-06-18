@@ -172,8 +172,9 @@ export const Body = ({nav}: { nav: boolean }) => {
                 <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
                         handleSearch={handleSearch} setFilter={setFilter}/>
             </div>
-            {nav && <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
-                            handleSearch={handleSearch} setFilter={setFilter}/>}
+            {nav && width.width < 600 &&
+                <Filter showUSD={showUSD} setShowUSD={setShowUSD} mans={manufacturers} cats={cats}
+                        handleSearch={handleSearch} setFilter={setFilter}/>}
             {products && manufacturers && cats && manufacturers.length > 0 && fetchedModels.length > 0 ? (
                 <React.Fragment>
                     <div className={styles.cardHolder}>
